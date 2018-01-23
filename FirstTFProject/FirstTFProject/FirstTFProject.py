@@ -11,10 +11,17 @@ def main():
     mnist = input_data.read_data_sets("MNIST_data/",one_hot=True)
 
     # Define model
+    k = 50; # Neurons in first layer
+    w1 = tf.Variable(tf.truncated_normal([784,k],stddev=0.1))
+    b1 = tf.Variable(tf.zeros([k]))
+
+    w2 = tf.Variable(tf.zeros([k, 10]))
+    b2 = tf.Variable(tf.zeros([10]))
+
     x = tf.placeholder(tf.float32, [None, 784])
-    W = tf.Variable(tf.zeros([784, 10]))
-    b = tf.Variable(tf.zeros([10]))
-    y = tf.nn.softmax(tf.matmul(x, W) + b)
+
+    y1 = tf.nn.sigmoid(tf.matmul(x,w1)+b1)
+    y = tf.nn.softmax(tf.matmul(y1,w2)+b2)
 
     # Train model
     y_ = tf.placeholder(tf.float32, [None, 10])
